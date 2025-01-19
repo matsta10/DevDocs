@@ -6,8 +6,10 @@ WORKDIR /app
 COPY package.json ./
 RUN npm install
 
-# Copy and build
+# Copy source code
 COPY . .
+
+# Build application
 RUN npm run build
 
 # Production stage
