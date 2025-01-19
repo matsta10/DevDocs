@@ -13,13 +13,13 @@ services:
       - dokploy-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.next-app.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.next-app.rule=Host(`${DOMAIN:-localhost}`)"
       - "traefik.http.routers.next-app.entrypoints=websecure"
       - "traefik.http.routers.next-app.tls.certResolver=letsencrypt"
       - "traefik.http.services.next-app.loadbalancer.server.port=3000"
     environment:
       - NODE_ENV=production
-      - DOMAIN=${DOMAIN}
+      - DOMAIN=${DOMAIN:-localhost}
 
   backend:
     build:
@@ -35,7 +35,7 @@ services:
       - dokploy-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.backend.rule=Host(`api.${DOMAIN}`)"
+      - "traefik.http.routers.backend.rule=Host(`api.${DOMAIN:-localhost}`)"
       - "traefik.http.routers.backend.entrypoints=websecure"
       - "traefik.http.routers.backend.tls.certResolver=letsencrypt"
       - "traefik.http.services.backend.loadbalancer.server.port=24125"
