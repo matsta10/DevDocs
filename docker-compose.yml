@@ -1,0 +1,59 @@
+version: "3.8"
+
+services:
+  next-app:
+    build:
+      context: ./next-app
+      dockerfile: prod.Dockerfile
+    restart: always
+    ports:
+      - 3000
+    volumes:
+      - "../files/next-app/uploads:/app/uploads"
+      - "../files/next-app/logs:/app/logs"
+    networks:
+      - dokploy-network
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.next-app.rule=Host(`${DOMAIN}`)
+      - traefik.http.routers.next-app.entrypoints=websecure
+      - traefik.http.routers.next-app.tls.certResolver=letsencrypt
+      - traefik.http.services.next-app.loadbalancer.server.port=3000
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=${DATABASE_URL}
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 24125
+    volumes:
+      - "../files/backend/data:/app/data"
+      - "../files/backend/logs:/app/logs"
+    networks:
+      - dokploy-network
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.backend.rule=Host(`api.${DOMAIN}`)
+      - traefik.http.routers.backend.entrypoints=websecure
+      - traefik.http.routers.backend.tls.certResolver=letsencrypt
+      - traefik.http.services.backend.loadbalancer.server.port=24125
+
+  mcp-server:
+    build:
+      context: ./fast-markdown-mcp
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - "../files/storage/markdown:/app/storage/markdown"
+    networks:
+      - dokploy-network
+    environment:
+      - PYTHONPATH=/app/src
+
+networks:
+  dokploy-network:
+    external: true 
