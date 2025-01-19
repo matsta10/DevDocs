@@ -5,12 +5,15 @@ WORKDIR /app
 # Install build dependencies
 RUN apk add --no-cache gcc musl-dev linux-headers
 
-# Copy setup files first
-COPY setup.py .
+# Copy and install requirements
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the application code
 COPY src/ ./src/
 
-# Install the package in editable mode
-RUN pip install -e .
+# Set Python path
+ENV PYTHONPATH=/app/src
 
 # Create storage directory
 RUN mkdir -p /app/storage/markdown

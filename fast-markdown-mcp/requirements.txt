@@ -2,5 +2,5 @@ fastapi>=0.68.0
 uvicorn>=0.15.0
 python-multipart>=0.0.5
 aiofiles>=0.7.0
-requests>=2.26.0
-beautifulsoup4>=4.9.3
+markdown>=3.3.4
+beautifulsoup4>=4.9.3 

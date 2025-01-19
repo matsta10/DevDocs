@@ -2,10 +2,10 @@ FROM python:3.11-alpine
 
 WORKDIR /app
 
-# Install system dependencies
+# Install build dependencies
 RUN apk add --no-cache gcc musl-dev linux-headers
 
-# Copy requirements first for better caching
+# Copy requirements first
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
