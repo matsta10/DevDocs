@@ -9,6 +9,7 @@ services:
     volumes:
       - "../files/next-app/uploads:/app/uploads"
       - "../files/next-app/logs:/app/logs"
+      - "./next-app:/app"
     networks:
       - dokploy-network
     labels:
@@ -18,7 +19,8 @@ services:
       - "traefik.http.routers.next-app.tls.certResolver=letsencrypt"
       - "traefik.http.services.next-app.loadbalancer.server.port=3000"
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
+      - PORT=3000
       - DOMAIN=${DOMAIN:-localhost}
 
   backend:
