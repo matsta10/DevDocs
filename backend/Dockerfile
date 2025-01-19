@@ -1,27 +1,22 @@
-FROM python:3.11-alpine
+FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install system dependencies including browsers
-RUN apk add --no-cache \
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
     gcc \
-    musl-dev \
-    linux-headers \
+    python3-dev \
     chromium \
-    chromium-chromedriver \
-    nss \
-    freetype \
-    freetype-dev \
-    harfbuzz \
-    ca-certificates \
-    ttf-freefont \
+    chromium-driver \
+    fonts-freefont-ttf \
     nodejs \
     npm \
-    git
+    git \
+    && rm -rf /var/lib/apt/lists/*
 
 # Set environment variables for Playwright
 ENV PYTHONUNBUFFERED=1 \
-    PLAYWRIGHT_BROWSERS_PATH=/usr/lib/chromium \
+    PLAYWRIGHT_BROWSERS_PATH=/usr/bin/chromium \
     PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
 
 # Upgrade pip
