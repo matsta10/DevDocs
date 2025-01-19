@@ -16,12 +16,16 @@ RUN apk add --no-cache \
     ca-certificates \
     ttf-freefont \
     nodejs \
-    npm
+    npm \
+    git
 
 # Set environment variables for Playwright
 ENV PYTHONUNBUFFERED=1 \
     PLAYWRIGHT_BROWSERS_PATH=/usr/lib/chromium \
     PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
+
+# Upgrade pip
+RUN pip install --no-cache-dir --upgrade pip
 
 # Copy requirements first
 COPY requirements.txt .
