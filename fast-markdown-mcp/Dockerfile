@@ -2,12 +2,15 @@ FROM python:3.11-alpine
 
 WORKDIR /app
 
-# Copy setup files
-COPY setup.py .
-COPY src/ ./src/
+# Install build dependencies
+RUN apk add --no-cache gcc musl-dev linux-headers
 
-# Install dependencies and package
-RUN pip install --no-cache-dir -e .
+# Copy requirements first
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the entire application
+COPY . .
 
 # Create storage directory
 RUN mkdir -p /app/storage/markdown
