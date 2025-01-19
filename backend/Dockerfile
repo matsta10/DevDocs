@@ -14,6 +14,9 @@ RUN apt-get update && apt-get install -y \
     git \
     && rm -rf /var/lib/apt/lists/*
 
+# Create non-root user
+RUN groupadd -r appuser && useradd -r -g appuser appuser
+
 # Set environment variables for Playwright
 ENV PYTHONUNBUFFERED=1 \
     PLAYWRIGHT_BROWSERS_PATH=/usr/bin/chromium \
@@ -29,8 +32,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY . .
 
-# Create necessary directories
-RUN mkdir -p /app/data /app/logs
+# Create necessary directories and set permissions
+RUN mkdir -p /app/data /app/logs && \
+    chown -R appuser:appuser /app
+
+USER appuser
 
 EXPOSE 24125
 

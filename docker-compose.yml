@@ -5,7 +5,7 @@ services:
       dockerfile: prod.Dockerfile
     restart: always
     ports:
-      - "3000:3000"
+      - "3001:3000"
     volumes:
       - "../files/next-app/uploads:/app/uploads"
       - "../files/next-app/logs:/app/logs"
@@ -29,7 +29,7 @@ services:
       dockerfile: Dockerfile
     restart: always
     ports:
-      - "24125:24125"
+      - "24126:24125"
     volumes:
       - "../files/backend/data:/app/data"
       - "../files/backend/logs:/app/logs"
